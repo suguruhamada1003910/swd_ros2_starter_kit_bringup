@@ -15,7 +15,7 @@ import time
 
 def generate_launch_description():
 
-    bringup_dir = get_package_share_directory('swd_ros2_starter_kit_bringup')
+    bringup_dir = get_package_share_directory('bringup')
     swd_ros2_controllers_dir = get_package_share_directory(
         'swd_ros2_controllers')
 
