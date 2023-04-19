@@ -18,6 +18,11 @@ def generate_launch_description():
     bringup_dir = get_package_share_directory('swd_ros2_starter_kit_bringup')
     slam_params = os.path.join(bringup_dir, "params", 'starter_kit_slam_params')
 
+    rviz_config_dir = os.path.join(
+        bringup_dir,
+        'rviz',
+        'starter_kit_ros2.rviz')
+
     # Create the launch configuration variables
     use_sim_time = LaunchConfiguration('use_sim_time')
 
@@ -104,5 +109,13 @@ def generate_launch_description():
             package='slam_toolbox',
             executable='async_slam_toolbox_node',
             name='slam_toolbox'
+        ),
+        # rviz2
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            arguments=['-d', rviz_config_dir],
+            parameters=[{'use_sim_time': use_sim_time}],
         ),
     ])
