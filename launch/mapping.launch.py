@@ -24,7 +24,7 @@ def generate_launch_description():
         'starter_kit_ros2.rviz')
 
     # Create the launch configuration variables
-    use_sim_time = LaunchConfiguration('use_sim_time')
+    use_sim_time = LaunchConfiguration('use_sim_time', default = 'false')
 
     # Load specific dbus user session if exists
     session = "/tmp/SYSTEMCTL_dbus.id"
@@ -49,35 +49,12 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use simulation (Gazebo) clock if true'),
-
-        DeclareLaunchArgument(
-            'baseline_m',
-            default_value='0.485'),
-        DeclareLaunchArgument(
-            'motor_max_speed_rpm',
-            default_value='1050'),
-        Node(
-            package='swd_ros2_controllers',
-            executable='swd_diff_drive_controller',
-            name='swd_diff_drive_controller',
-            parameters=[
-                        {'use_sim_time': LaunchConfiguration('use_sim_time')},
-                        {"baseline_m": LaunchConfiguration('baseline_m')},
-                        {"left_swd_config_file": "/opt/ezw/usr/etc/ezw-smc-core/swd_left_config.ini"},
-                        {"right_swd_config_file": "/opt/ezw/usr/etc/ezw-smc-core/swd_right_config.ini"},
-                        {"pub_freq_hz": 30},
-                        {"watchdog_receive_ms": 500},
-                        {"base_frame": "base_footprint"},
-                        {"odom_frame": "odom"},
-                        {"publish_odom": True},
-                        {"publish_tf": True},
-                        {"publish_safety_functions": True},
-                        {"motor_max_speed_rpm": LaunchConfiguration('motor_max_speed_rpm')},
-                        {"motor_max_safety_limited_speed_rpm": 490},
-                        {"have_backward_sls": False},
-                        {"left_encoder_relative_error": 0.2},
-                        {"right_encoder_relative_error": 0.2},
-                        ]
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([os.path.join(
+                bringup_dir, 'launch', 'swd_controller.launch.py')]),
+            launch_arguments={
+                'use_sim_time': use_sim_time,
+            }.items(),
         ),
         # TF base_link to laser
         Node(

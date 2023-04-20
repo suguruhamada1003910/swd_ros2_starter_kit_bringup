@@ -16,22 +16,23 @@ import time
 def generate_launch_description():
 
     # Create the launch configuration variables
+    bringup_dir = get_package_share_directory('swd_ros2_starter_kit_bringup')
     use_sim_time = LaunchConfiguration('use_sim_time', default = 'false')
     map_dir = LaunchConfiguration(
         'map',
         default=os.path.join(
-            get_package_share_directory('swd_ros2_starter_kit_bringup'),
+            bringup_dir,
             'map',
             'map.yaml'))
     param_dir = LaunchConfiguration(
         'params_file',
         default=os.path.join(
-            get_package_share_directory('swd_ros2_starter_kit_bringup'),
+            bringup_dir,
             'params',
             'starter_kit_navigation_params.yaml'))
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
     rviz_config_dir = os.path.join(
-        get_package_share_directory('swd_ros2_starter_kit_bringup'),
+        bringup_dir,
         'rviz',
         'starter_kit_ros2.rviz')
 
@@ -57,30 +58,17 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use simulation (Gazebo) clock if true'),
-
         # SWD diff drive controller
-        Node(
-            package='swd_ros2_controllers',
-            executable='swd_diff_drive_controller',
-            name='swd_diff_drive_controller',
-            parameters=[
-                        {'use_sim_time': use_sim_time},
-                        {"baseline_m": 0.485},
-                        {"left_swd_config_file": "/opt/ezw/usr/etc/ezw-smc-core/swd_left_config.ini"},
-                        {"right_swd_config_file": "/opt/ezw/usr/etc/ezw-smc-core/swd_right_config.ini"},
-                        {"pub_freq_hz": 50},
-                        {"watchdog_receive_ms": 500},
-                        {"base_frame": "base_footprint"},
-                        {"odom_frame": "odom"},
-                        {"publish_odom": True},
-                        {"publish_tf": True},
-                        {"publish_safety_functions": True},
-                        {"motor_max_speed_rpm": 1050},
-                        {"motor_max_safety_limited_speed_rpm": 490},
-                        {"have_backward_sls": False},
-                        {"left_encoder_relative_error": 0.2},
-                        {"right_encoder_relative_error": 0.2},
-                        ]
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='false',
+            description='Use simulation (Gazebo) clock if true'),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([os.path.join(
+                bringup_dir, 'launch', 'swd_controller.launch.py')]),
+            launch_arguments={
+                'use_sim_time': use_sim_time,
+            }.items(),
         ),
         # TF base_link to laser
         Node(
