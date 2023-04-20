@@ -36,16 +36,6 @@ def generate_launch_description():
         'rviz',
         'starter_kit_ros2.rviz')
 
-    # Load specific dbus user session if exists
-    session = "/tmp/SYSTEMCTL_dbus.id"
-    if os.path.isfile(session):
-        print("SYSTEMCTL_dbus.id detected")
-
-        with open(session) as f:
-            lines = f.readlines()
-        env = dict(line.strip().split("=", 1) for line in lines)
-        os.environ.update(env)
-
      # Launch description
     return LaunchDescription([
         # TF base_footprint to base_link
