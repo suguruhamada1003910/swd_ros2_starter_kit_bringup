@@ -64,10 +64,6 @@ def generate_launch_description():
                 [os.path.join(bringup_dir, 'launch/xbox.launch.py')])
         ),
         # SLAM
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='false',
-        ),
         Node(
             parameters=[
                 {"slam_params_file": slam_params},

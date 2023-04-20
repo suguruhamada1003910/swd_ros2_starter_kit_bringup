@@ -44,10 +44,6 @@ def generate_launch_description():
             executable='static_transform_publisher',
             arguments=['0', '0', '0', '0', '0', '0', 'base_footprint', 'base_link']
         ), 
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='false',
-            description='Use simulation (Gazebo) clock if true'),
         # SWD diff drive controller
         DeclareLaunchArgument(
             'use_sim_time',
