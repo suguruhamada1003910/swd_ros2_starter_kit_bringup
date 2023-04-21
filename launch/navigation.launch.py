@@ -48,7 +48,8 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',
-            description='Use simulation (Gazebo) clock if true'),
+            description='Use simulation (Gazebo) clock if true'
+        ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([os.path.join(
                 bringup_dir, 'launch', 'swd_controller.launch.py')]),
@@ -72,11 +73,13 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'map',
             default_value=map_dir,
-            description='Full path to map file to load'),
+            description='Full path to map file to load'
+        ),
         DeclareLaunchArgument(
             'params_file',
             default_value=param_dir,
-            description='Full path to param file to load'),
+            description='Full path to param file to load'
+        ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
             launch_arguments={

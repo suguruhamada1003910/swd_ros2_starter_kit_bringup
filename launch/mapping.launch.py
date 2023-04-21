@@ -38,7 +38,8 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',
-            description='Use simulation (Gazebo) clock if true'),
+            description='Use simulation (Gazebo) clock if true'
+        ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([os.path.join(
                 bringup_dir, 'launch', 'swd_controller.launch.py')]),

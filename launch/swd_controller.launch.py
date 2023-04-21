@@ -26,7 +26,8 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',
-            description='Use simulation (Gazebo) clock if true'),
+            description='Use simulation (Gazebo) clock if true'
+        ),
         Node(
             package='swd_ros2_controllers',
             executable='swd_diff_drive_controller',
